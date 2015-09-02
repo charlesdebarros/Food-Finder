@@ -1,4 +1,5 @@
 require 'restaurant'
+require 'config'
 
 class Guide
 
@@ -23,11 +24,21 @@ class Guide
     introduction
     result = nil
     until result == :quit
-      print "> "
-      user_response = gets.chomp
-      result = do_action(user_response)
+      action = get_action
+      result = do_action(action)
     end
     conclusion
+  end
+
+  def get_action
+    action = nil
+    until Config.actions.include?(action)
+      puts "The options available are: " + Config.actions.join(", ") + "." if action
+      print "> "
+      user_response = gets.chomp
+      action = user_response.downcase.strip
+    end
+    return action
   end
 
   def do_action(action)
