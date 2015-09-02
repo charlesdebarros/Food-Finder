@@ -21,12 +21,28 @@ class Guide
 
   def launch!
     introduction
-
-    # action loop
-    #   what would you like to do? (list, find, add, quit)
-    #   do that action
-    # repeat until user chooses to quit
+    result = nil
+    until result == :quit
+      print "> "
+      user_response = gets.chomp
+      result = do_action(user_response)
+    end
     conclusion
+  end
+
+  def do_action(action)
+    case action
+    when 'list'
+      puts 'Listing...'
+    when 'find'
+      puts 'Finding...'
+    when 'add'
+      puts 'Adding...'
+    when 'quit'
+      return :quit
+    else 
+      puts "\nThe action requested has not been recognised! Please try again.\n"
+    end
   end
 
   def introduction
