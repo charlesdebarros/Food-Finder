@@ -1,5 +1,6 @@
 require 'restaurant'
 require 'config'
+require 'support/string_extend'
 
 class Guide
 
@@ -57,13 +58,13 @@ class Guide
   end
 
   def list
-    output_action_header("Listing restaurants")
+    output_action_header("listing restaurants")
     restaurants = Restaurant.saved_restaurants
     output_restaurant_table(restaurants)
   end
 
   def add
-    output_action_header("Adding restaurants")
+    output_action_header("add a restaurant")
     restaurant = Restaurant.profile_builder
 
     if restaurant.save
@@ -94,8 +95,8 @@ class Guide
     print " " + "Price".rjust(6) + "\n"
     puts "-" * 60
     restaurants.each do |rest|
-      line = " " << rest.name.ljust(30)
-      line << " " + rest.cuisine.ljust(20)
+      line = " " << rest.name.titleize.ljust(30)
+      line << " " + rest.cuisine.titleize.ljust(20)
       line << " " + rest.formatted_price.rjust(6)
       puts line
     end
