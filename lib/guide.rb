@@ -7,12 +7,22 @@ class Guide
   end
 
   def launch!
-    # introductory text
+    introduction
+
     # action loop
     #   what would you like to do? (list, find, add, quit)
     #   do that action
     # repeat until user chooses to quit
-    # conclusion text
+    conclusion
+  end
+
+  def introduction
+    puts "\n\n<<< Welcome to Food Finder >>>\n\n"
+    puts "This is an interactive guide to help you find the food you crave.\n\n"
+  end
+
+  def conclusion
+    puts "\n<<< Goodbye and enjoy your meal! >>>\n\n\n"
   end
 
 end
