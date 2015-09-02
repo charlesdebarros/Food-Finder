@@ -60,7 +60,7 @@ class Guide
     puts "\nListing restaurants.\n\n"
     restaurants = Restaurant.saved_restaurants
     restaurants.each do |rest|
-      puts rest.name + " | " + rest.cuisine + " | " + rest.price
+      puts rest.name + " | " + rest.cuisine + " | " + rest.formatted_price
     end
   end
 
