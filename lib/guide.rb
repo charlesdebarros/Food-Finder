@@ -112,6 +112,7 @@ class Guide
   def introduction
     puts "\n\n<<< Welcome to Food Finder >>>\n\n"
     puts "This is an interactive guide to help you find the food you crave.\n\n"
+    puts "Please type one of the following: " + Config.actions.join(", ") + ".\n\n"
   end
 
   def conclusion

@@ -11,3 +11,16 @@ There will be user interaction:
     * sortable
   * add new restaurants to the list
   * find restaurants by keyword
+
+### Screenshots
+
+![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_1.png)
+
+
+![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_list.png)
+
+
+![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_add.png)
+
+
+![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_list_by.png)
