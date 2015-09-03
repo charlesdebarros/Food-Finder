@@ -14,13 +14,14 @@ There will be user interaction:
 
 ### Screenshots
 
+General view:
 ![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_1.png)
 
-
+Listing restaurants by name (default)
 ![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_list.png)
 
-
+Adding a new restaurant:
 ![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_add.png)
 
-
+Listing restaurants by other criteria:
 ![image](https://raw.githubusercontent.com/charlesdebarros/Food-Finder/master/lib/support/food_finder_list_by.png)
