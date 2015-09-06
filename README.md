@@ -1,3 +1,5 @@
+This exercise is based on the Lynda.com Basic Ruby Essential training.
+
 ### What is Food Finder
 
 Food Finder is a simple command line run Ruby programme which allow users to consult a list of restaurants to decide what to eat. 
