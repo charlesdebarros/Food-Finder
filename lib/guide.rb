@@ -1,6 +1,7 @@
 require 'restaurant'
 require 'config'
 require 'support/string_extend'
+require 'support/number_helper'
 
 class Guide
 
