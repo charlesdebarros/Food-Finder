@@ -9,4 +9,9 @@ class String
     self.split(' ').collect {|word| word.capitalize}.join(" ")
   end
 
+  def blank?
+    # allows to test if a string contains only whitespaces
+    /\A[[:space]]*\z/ === self
+  end
+
 end

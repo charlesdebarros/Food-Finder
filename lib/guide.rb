@@ -5,6 +5,8 @@ require 'support/number_helper'
 
 class Guide
 
+  include NumberHelper
+
   def initialize(path=nil)
     # locate the restaurant text file at path
     Restaurant.filepath = path
