@@ -11,7 +11,7 @@ class String
 
   def blank?
     # allows to test if a string contains only whitespaces
-    /\A[[:space]]*\z/ === self
+    /\A[[:space:]]*\z/ === self
   end
 
 end
