@@ -14,6 +14,13 @@ There will be user interaction:
   * add new restaurants to the list
   * find restaurants by keyword
 
+### Technologies used
+
+  * Ruby version 2.2.2p95
+  * RSpec version 3.3.2
+  * Linux Mint 17.1 - Rebecca - 64bit
+  * Sublime Text 3 - build 3083
+
 ### Screenshots
 
 General view:
