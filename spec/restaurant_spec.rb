@@ -4,7 +4,7 @@ require 'restaurant_file'
 describe Restaurant do
 
   let(:test_file) { 'spec/fixtures/restaurants_test.txt' }
-  let(:crescent) { Restaurant.new(:name => 'Crescent', :cuisine => 'paleo', :price => '321') }
+  let(:chiquitos) { Restaurant.new(:name => 'Chiquitos', :cuisine => 'spanish', :price => '150') }
   
   describe 'attributes' do
 
@@ -95,18 +95,18 @@ describe Restaurant do
     
     context 'with custom options' do
 
-      # crescent already calls #new using custom options
+      # chiquitos already calls #new using custom options
       
       it 'allows setting the :name' do
-        expect(crescent.name).to eq('Crescent')
+        expect(chiquitos.name).to eq('Chiquitos')
       end
 
       it 'allows setting the :cuisine' do
-        expect(crescent.cuisine).to eq('paleo')
+        expect(chiquitos.cuisine).to eq('spanish')
       end
 
       it 'allows setting the :price' do
-        expect(crescent.price).to eq('321')
+        expect(chiquitos.price).to eq('150')
       end
 
     end
@@ -117,13 +117,13 @@ describe Restaurant do
     
     it 'returns false if @@file is nil' do
       expect(Restaurant.file).to be_nil
-      expect(crescent.save).to be false
+      expect(chiquitos.save).to be false
     end
     
     it 'returns false if not valid' do
       Restaurant.load_file(test_file)
       expect(Restaurant.file).not_to be_nil
-      
+
       # subject will be invalid by default
       expect(subject.save).to be false
     end
@@ -133,8 +133,51 @@ describe Restaurant do
       expect(Restaurant.file).not_to be_nil
 
       # Message expectation on partial test double
-      expect(Restaurant.file).to receive(:append).with(crescent)
-      crescent.save
+      expect(Restaurant.file).to receive(:append).with(chiquitos)
+      chiquitos.save
+    end
+    
+  end
+
+  describe '#valid?' do
+    
+    it 'returns false if name is nil' do
+      chiquitos.name = nil
+      expect(chiquitos.valid?).to be false
+    end
+
+    it 'returns false if name is blank' do
+      chiquitos.name = "   "
+      expect(chiquitos.valid?).to be false
+    end
+
+    it 'returns false if cuisine is nil' do
+      chiquitos.name = nil
+      expect(chiquitos.valid?).to be false
+    end
+
+    it 'returns false if cuisine is blank' do
+      chiquitos.cuisine = "   "
+      expect(chiquitos.valid?).to be false
+    end
+    
+    it 'returns false if price is nil' do
+      chiquitos.price = nil
+      expect(chiquitos.valid?).to be false
+    end
+
+    it 'returns false if price is 0' do
+      chiquitos.price = 0
+      expect(chiquitos.valid?).to be false
+    end
+    
+    it 'returns false if price is negative' do
+      chiquitos.price = -20
+      expect(chiquitos.valid?).to be false
+    end
+
+    it 'returns true if name, cuisine, price are present' do
+      expect(chiquitos.valid?).to be true
     end
     
   end
