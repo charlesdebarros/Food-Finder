@@ -7,6 +7,7 @@ describe Restaurant do
   let(:crescent) { Restaurant.new(:name => 'Crescent', :cuisine => 'paleo', :price => '321') }
   
   describe 'attributes' do
+
     it 'allows reading and writing for :name' do
       subject.name = 'Kebabs'
       expect(subject.name).to eq('Kebabs')
@@ -21,6 +22,7 @@ describe Restaurant do
       subject.price = '123'
       expect(subject.price).to eq('123')
     end
+
   end
   
   describe '.load_file' do
@@ -88,6 +90,7 @@ describe Restaurant do
       it 'does not set a default for :price' do
         expect(subject.price).to be_nil
       end
+
     end
     
     context 'with custom options' do
@@ -108,6 +111,32 @@ describe Restaurant do
 
     end
 
+  end
+
+  describe '#save' do
+    
+    it 'returns false if @@file is nil' do
+      expect(Restaurant.file).to be_nil
+      expect(crescent.save).to be false
+    end
+    
+    it 'returns false if not valid' do
+      Restaurant.load_file(test_file)
+      expect(Restaurant.file).not_to be_nil
+      
+      # subject will be invalid by default
+      expect(subject.save).to be false
+    end
+    
+    it 'calls append on @@file if valid' do
+      Restaurant.load_file(test_file)
+      expect(Restaurant.file).not_to be_nil
+
+      # Message expectation on partial test double
+      expect(Restaurant.file).to receive(:append).with(crescent)
+      crescent.save
+    end
+    
   end
 
   
