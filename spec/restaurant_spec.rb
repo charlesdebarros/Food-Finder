@@ -69,5 +69,46 @@ describe Restaurant do
     
   end
 
+  describe '#initialize' do
+
+    context 'with no options' do
+      # subject would return the same thing
+      let(:no_options) { Restaurant.new }
+
+      # subject already calls #new using default options
+
+      it 'sets a default of "" for :name' do
+        expect(subject.name).to eq("")
+      end
+
+      it 'sets a default of "unknown" for :cuisine' do
+        expect(subject.cuisine).to eq("unknown")
+      end
+
+      it 'does not set a default for :price' do
+        expect(subject.price).to be_nil
+      end
+    end
+    
+    context 'with custom options' do
+
+      # crescent already calls #new using custom options
+      
+      it 'allows setting the :name' do
+        expect(crescent.name).to eq('Crescent')
+      end
+
+      it 'allows setting the :cuisine' do
+        expect(crescent.cuisine).to eq('paleo')
+      end
+
+      it 'allows setting the :price' do
+        expect(crescent.price).to eq('321')
+      end
+
+    end
+
+  end
+
   
 end
