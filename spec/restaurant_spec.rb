@@ -57,7 +57,7 @@ describe Restaurant do
       Restaurant.load_file(test_file)
       restaurants = Restaurant.all
       expect(restaurants.class).to eq(Array)
-      expect(restaurants.length).to eq(7)
+      expect(restaurants.length).to eq(6)
       expect(restaurants.first.class).to eq(Restaurant)
     end
 
@@ -68,5 +68,6 @@ describe Restaurant do
     end
     
   end
+
   
 end
