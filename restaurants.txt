@@ -1,6 +1,6 @@
-Nandos	Portuguese	10
-Samba Grill	Brazilian	10
-Habib's	Arab	15
+nandos	portuguese	10
+Samba Grill	brazilian	7
+habib's	arab	15
 cafe nero	coffee	5
-Munas	Eritrean	30
-Pepitos	mexican	20
+munas	eritrean	30
+pepitos	mexican	20

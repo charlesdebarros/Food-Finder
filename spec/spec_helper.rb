@@ -40,3 +40,4 @@ def remove_created_file(file_path)
     File.delete(file_path)
   end
 end
+

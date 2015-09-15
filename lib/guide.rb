@@ -1,146 +1,160 @@
-require 'restaurant'
-require 'config'
-require 'support/string_extend'
-require 'support/number_helper'
+require 'readline'
+
+require_relative('restaurant')
+require_relative('support/string_extend')
+require_relative('support/number_helper')
 
 class Guide
-
   include NumberHelper
 
-  def initialize(path=nil)
-    # locate the restaurant text file at path
-    Restaurant.filepath = path
-    if Restaurant.file_usable?
-      puts "Found restaurant file."
-    elsif Restaurant.create_file
-      puts "Created restaurant file."
-    else
-      puts "Exiting.\n\n"
-      exit!
-    end
+  @@valid_actions = ['list', 'find', 'add', 'quit']
 
-      
-    # or create a new file
-    # exit if create fails
+  @@valid_sorting = ['name', 'cuisine', 'price']
+  
+  def initialize(path=nil)
+    Restaurant.load_file(path)
   end
 
   def launch!
-    introduction
+    output_introduction
+    # action loop
     result = nil
     until result == :quit
       action, args = get_action
       result = do_action(action, args)
     end
-    conclusion
+    output_conclusion
   end
-
-  def get_action
-    action = nil
-    until Config.actions.include?(action)
-      puts "The options available are: " + Config.actions.join(", ") + "." if action
-      print "> "
-      user_response = gets.chomp
-      args = user_response.downcase.strip.split(' ')
-      action = args.shift
-    end
-    return action, args
-  end
-
-  def do_action(action, args=[])
-    case action
-    when 'list'
-      list(args)
-    when 'find'
-      keyword = args.shift
-      find(keyword)
-    when 'add'
-      add
-    when 'quit'
-      return :quit
-    else 
-      puts "\nThe action requested has not been recognised! Please try again.\n"
-    end
-  end
-
-  def list(args=[])
-    sort_order = args.shift
-    sort_order = args.shift if sort_order == 'by'
-    sort_order ||= "name"
-    sort_order = "name" unless ['name', 'cuisine', 'price'].include?(sort_order)
-
-    output_action_header("Listing restaurants")
-
-    restaurants = Restaurant.saved_restaurants
-    restaurants.sort! do |r1, r2|
-      case sort_order
-      when 'name'
-        r1.name.downcase <=> r2.name.downcase
-      when 'cuisine'
-        r1.cuisine.downcase <=> r2.cuisine.downcase
-      when 'price'
-        r1.price.to_i <=> r2.price.to_i
-      end
-    end
-    output_restaurant_table(restaurants)
-    puts "Sort the entries using 'list cuisine' or 'list by cuisine', for example.\n\n"
-  end
-
-  def find(keyword="")
-    output_action_header("Find a restaurant")
-    if keyword
-      restaurants = Restaurant.saved_restaurants
-      found = restaurants.select do |rest|
-        rest.name.downcase.include?(keyword.downcase) ||
-        rest.cuisine.downcase.include?(keyword.downcase) ||
-        rest.price.to_i <= keyword.to_i
-      end
-      output_restaurant_table(found)
-    else
-      puts "Find using a key phrase to search through the restaurant list."
-      puts "Examples: 'find nandos', 'find brazilian', 'find braz'\n\n"
-    end
-  end
-
-  def add
-    output_action_header("Add a restaurant")
-    restaurant = Restaurant.profile_builder
-
-    if restaurant.save
-      puts "\nNew restaurant added.\n\n"
-    else
-      puts "\nAn error has occurred. Restaurant not added.\n\n"
-    end
-  end
-
-  def introduction
-    puts "\n\n<<< Welcome to Food Finder >>>\n\n"
-    puts "This is an interactive guide to help you find the food you crave.\n\n"
-    puts "Please type one of the following: " + Config.actions.join(", ") + ".\n\n"
-  end
-
-  def conclusion
-    puts "\n<<< Goodbye and enjoy your meal! >>>\n\n\n"
-  end
-
+  
+  
   private
-
-  def output_action_header(text)
-    puts "\n#{text.upcase.center(60)}\n\n"
-  end
-
-  def output_restaurant_table(restaurants=[])
-    print " " + "Name".ljust(30)
-    print " " + "Cuisine".ljust(20)
-    print " " + "Price".rjust(6) + "\n"
-    puts "-" * 60
-    restaurants.each do |rest|
-      line = " " << rest.name.titleize.ljust(30)
-      line << " " + rest.cuisine.titleize.ljust(20)
-      line << " " + rest.formatted_price.rjust(6)
-      puts line
+  
+    def get_action
+      action = nil
+      # Keep asking for user input until we get a valid action
+      until @@valid_actions.include?(action)
+        puts "Action not recognized." if action
+        output_valid_actions
+        user_response = user_input('> ')
+        args = user_response.downcase.split(' ')
+        action = args.shift
+      end
+      return action, args
     end
-    puts "No listings found." if restaurants.empty?
-    puts "-" * 60
-  end
+  
+    def do_action(action, args=[])
+      case action
+      when 'list'
+        list(args)
+      when 'find'
+        keyword = args.shift
+        find(keyword)
+      when 'add'
+        add
+      when 'quit'
+        return :quit
+      end
+    end
+
+    def list(args=[])
+      output_action_header("Listing restaurants")
+
+      sort_order = args.shift
+      sort_order = args.shift if sort_order == 'by'
+      sort_order = "name" unless @@valid_sorting.include?(sort_order)
+    
+      restaurants = Restaurant.all
+      restaurants.sort! do |r1, r2|
+        case sort_order
+        when 'name'
+          r1.name.downcase <=> r2.name.downcase
+        when 'cuisine'
+          r1.cuisine.downcase <=> r2.cuisine.downcase
+        when 'price'
+          r1.price.to_i <=> r2.price.to_i
+        end
+      end
+      output_restaurant_table(restaurants)
+      puts "Sort using: 'list cuisine' or 'list by cuisine'\n\n"
+    end
+  
+    def find(keyword="")
+      output_action_header("Find a restaurant")
+      if keyword
+        restaurants = Restaurant.all
+        found = restaurants.select do |rest|
+          rest.name.downcase.include?(keyword.downcase) || 
+          rest.cuisine.downcase.include?(keyword.downcase) || 
+          rest.price.to_i <= keyword.to_i
+        end
+        output_restaurant_table(found)
+      else
+        puts "Find using a key phrase to search the restaurant list."
+        puts "Examples: 'find tamale', 'find Mexican', 'find mex'\n\n"
+      end
+    end
+  
+    def add
+      output_action_header("Add a restaurant")
+      attributes = restaurant_attribute_input
+      restaurant = Restaurant.new(attributes)
+      if restaurant.save
+        puts "\nRestaurant Added\n\n"
+      else
+        puts "\nSave Error: Restaurant not added\n\n"
+      end
+    end
+  
+    def output_introduction
+      puts "\n\n<<< Welcome to the Food Finder >>>\n\n"
+      puts "This is an interactive guide to help you find the food you crave.\n\n"
+    end
+
+    def output_conclusion
+      puts "\n<<< Goodbye and Bon Appetit! >>>\n\n\n"
+    end
+  
+    def output_valid_actions
+      puts "Actions: " + @@valid_actions.join(", ")
+    end
+        
+    def output_action_header(text)
+      puts "\n#{text.upcase.center(60)}\n\n"
+    end
+  
+    def output_restaurant_table(restaurants=[])
+      print " " + "Name".ljust(30)
+      print " " + "Cuisine".ljust(20)
+      print " " + "Price".rjust(6) + "\n"
+      puts "-" * 60
+      restaurants.each do |rest|
+        line =  " " << rest.name.titleize.ljust(30)
+        line << " " + rest.cuisine.titleize.ljust(20)
+        line << " " + number_to_currency(rest.price).rjust(6)
+        puts line
+      end
+      puts "No listings found" if restaurants.empty?
+      puts "-" * 60
+    end
+  
+    def restaurant_attribute_input
+      args = {}
+      print "Restaurant name: "
+      args[:name] = user_input('')
+
+      print "Cuisine type: "
+      args[:cuisine] = user_input('')
+
+      print "Average price: "
+      args[:price] = user_input('')
+
+      return args
+    end
+
+    def user_input(prompt=nil)
+      prompt ||= '> '
+      result = Readline.readline(prompt, true)
+      result.strip
+    end
 
 end

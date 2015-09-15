@@ -1,88 +1,42 @@
-require 'support/number_helper'
+require_relative('restaurant_file')
 
 class Restaurant
-
-  include NumberHelper
-
-  @@filepath = nil
-
-  def self.filepath=(path=nil)
-    @@filepath = File.join(APP_ROOT, path)
-  end
-
+  
   attr_accessor :name, :cuisine, :price
-
-  def self.file_exists?
-    # class should know if the restaurant file exists
-    if @@filepath && File.exists?(@@filepath)
-      return true
-    else
-      return false
+  
+  @@file = nil
+  def self.file
+    @@file
+  end
+  
+  def self.load_file(filepath)
+    # locate the restaurant text file at path
+    @@file = RestaurantFile.new(:filepath => filepath)
+    unless @@file.usable?
+      puts "Restaurant file is not usable.\n\n"
+      @@file = nil
     end
   end
-
-  def self.file_usable?
-    return false unless @@filepath
-    return false unless File.exists?(@@filepath)
-    return false unless File.readable?(@@filepath)
-    return false unless File.writable?(@@filepath)
-    return true
+  
+  def self.all
+    !@@file.nil? ? @@file.read : []
   end
-
-  def self.create_file
-    File.open(@@filepath, 'w') unless file_exists?
-    return file_usable?
+  
+  def initialize(options={})
+    @name    = options[:name]    || ""
+    @cuisine = options[:cuisine] || "unknown"
+    @price   = options[:price]
   end
-
-  def self.saved_restaurants
-    restaurants = []
-    if file_usable?
-      file = File.new(@@filepath, 'r')
-      file.each_line do |line|
-        restaurants << Restaurant.new.import_line(line.chomp)
-      end
-      file.close
-    end
-    return restaurants
-  end
-
-  def self.profile_builder
-    args = {}
-    print "Restaurant name: "
-    args[:name] = gets.chomp.strip
-
-    print "Restaurant cuisine type: "
-    args[:cuisine] = gets.chomp.strip
-
-    print "Restaurant average price: "
-    args[:price] = gets.chomp.strip
-
-    return self.new(args)
-  end
-
-  def initialize(args={})
-    @name     = args[:name] || ""
-    @cuisine  = args[:cuisine] || ""
-    @price    = args[:price] || ""
-  end
-
-  def import_line(line)
-    line_array = line.split("\t")
-    @name, @cuisine, @price = line_array
-    return self
-
-  end
-
+  
   def save
-    return false unless Restaurant.file_usable?
-    File.open(@@filepath, 'a') do |file|
-      file.puts "#{[@name, @cuisine, @price].join("\t")}\n"
-    end
+    !@@file.nil? && valid? ? @@file.append(self) : false
+  end
+  
+  def valid?
+    return false if name.nil? || name.blank?
+    return false if cuisine.nil? || cuisine.blank?
+    return false if price.nil? || price.to_i <= 0
     return true
   end
-
-  def formatted_price
-    number_to_currency(@price)
-  end
-
+    
 end
