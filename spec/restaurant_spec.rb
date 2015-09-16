@@ -116,6 +116,7 @@ describe Restaurant do
   describe '#save' do
     
     it 'returns false if @@file is nil' do
+      # no file loaded
       expect(Restaurant.file).to be_nil
       expect(chiquitos.save).to be false
     end
@@ -181,6 +182,5 @@ describe Restaurant do
     end
     
   end
-
-  
+ 
 end

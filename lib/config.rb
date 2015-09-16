@@ -1,9 +1,9 @@
-class Config
+# class Config
 
-  @@actions = ['list', 'find', 'add', 'quit']
+#   @@actions = ['list', 'find', 'add', 'quit']
 
-  def self.actions
-    @@actions
-  end
+#   def self.actions
+#     @@actions
+#   end
 
-end
+# end

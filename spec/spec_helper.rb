@@ -6,7 +6,6 @@ require 'guide'
 # Set the application root for easy reference.
 APP_ROOT = File.expand_path('../..', __FILE__)
 
-
 def no_output(&block)
   original_stdout = $stdout.dup
   $stdout.reopen('/dev/null')

@@ -4,7 +4,7 @@ require_relative('restaurant')
 require_relative('support/string_extend')
 require_relative('support/number_helper')
 
-class Guide
+class Guide  
   include NumberHelper
 
   @@valid_actions = ['list', 'find', 'add', 'quit']
