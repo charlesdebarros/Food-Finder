@@ -6,6 +6,8 @@ Food Finder is a simple command line run Ruby programme which allow users to con
 
 Users will be able to add new restaurants and this data will be stored in a text file.
 
+This exercise is based on Lynda.com's "RSpec Testing" course.
+
 There will be user interaction: 
   * look for a restaurant
   * list restaurants
