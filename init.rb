@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# frozen_string_literal: true
+
 #### Food Finder ####
 #
 # Launch this file from the command line to get started.
