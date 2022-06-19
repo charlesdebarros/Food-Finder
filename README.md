@@ -22,10 +22,8 @@ At the your teminal command prompt simply run `ruby init.rb` and choose one of t
 
 ### Technologies used
 
-  * Ruby version 2.2.2p95
-  * RSpec version 3.3.2
-  * Linux Mint 17.1 - Rebecca - 64bit
-  * Sublime Text 3 - build 3083
+  * Ruby version 3.0.0
+  * RSpec version 3.11.X
 
 ### Screenshots
 
