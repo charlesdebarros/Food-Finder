@@ -15,6 +15,10 @@ There will be user interaction:
     * sortable
   * add new restaurants to the list
   * find restaurants by keyword
+  
+### Running the script
+
+At the your teminal command prompt simply run `ruby init.rb` and choose one of the actions: `list`, `find`, `add`, `quit`.
 
 ### Technologies used
 
